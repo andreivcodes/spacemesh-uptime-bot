@@ -1,0 +1,34 @@
+{
+  "name": "spacemesh-uptime-bot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andreivdev/spacemesh-uptime-bot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andreivdev/spacemesh-uptime-bot/issues"
+  },
+  "homepage": "https://github.com/andreivdev/spacemesh-uptime-bot#readme",
+  "devDependencies": {
+    "@types/node": "^17.0.21",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.5.7",
+    "@grpc/proto-loader": "^0.6.9",
+    "discord.js": "^13.6.0",
+    "dotenv": "^16.0.0",
+    "request": "^2.88.2"
+  }
+}
