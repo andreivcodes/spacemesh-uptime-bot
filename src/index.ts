@@ -30,7 +30,7 @@ async function main() {
   client.login(process.env.TOKEN);
   client.on("ready", async () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    const channel = client.channels.cache.get("928755445361963071");
+    const channel = client.channels.cache.get("924626320237936681");
     let networkStatusEmbed = await getMsg();
     networkStatusMsg = await channel.send(networkStatusEmbed);
     while (1) {
@@ -63,14 +63,9 @@ const getMsg = async () => {
           height: 50,
           width: 50,
         },
-        description: `**Network ID**\n\`${netId}\` \u3000 \n
-        **Current Epoch**\n\`${currentEpoch}\` \u3000 \n
-        **Current Layer**\n\`${currentLayer}\` \u3000 \n
-        **Genesis time**\n\`${new Date(genesisTime * 1000).toLocaleString(
-          "en-US"
-        )}\` \u3000 \n
-        
-            `,
+        description: `**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(
+          genesisTime * 1000
+        ).toLocaleString("en-US")}\` \u3000`,
         color: 0x0095ff,
         timestamp: new Date(),
         footer: {
