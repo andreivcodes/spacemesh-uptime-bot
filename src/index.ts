@@ -32,7 +32,12 @@ async function main() {
     console.log(`Logged in as ${client.user.tag}!`);
     const channel = client.channels.cache.get("924626320237936681");
     let networkStatusEmbed = await getMsg();
-    networkStatusMsg = await channel.send(networkStatusEmbed);
+
+    let oldmsg = await channel.messages.fetch("953365375528075274");
+
+    if (oldmsg) networkStatusMsg = oldmsg;
+    else networkStatusMsg = await channel.send(networkStatusEmbed);
+
     while (1) {
       try {
         getData();
