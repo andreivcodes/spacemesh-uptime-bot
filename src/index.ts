@@ -46,7 +46,7 @@ async function main() {
         console.log(`Err: ${e}`);
       }
       networkStatusMsg.edit(networkStatusEmbed);
-      await sleep(5 * 1000);
+      await sleep(30 * 1000);
     }
   });
   client.on("error", (error: any) => {
