@@ -70,7 +70,10 @@ const getMsg = async () => {
         },
         description: `**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(
           genesisTime * 1000
-        ).toLocaleString("en-US")}\` \u3000`,
+        ).toLocaleString("en-US")}\` \u3000 \n**Uptime time**\n\`${timeDiffCalc(
+          new Date(genesisTime * 1000),
+          new Date()
+        )}\` \u3000`,
         color: 0x0095ff,
         timestamp: new Date(),
         footer: {
@@ -141,6 +144,38 @@ async function getData() {
 
 function sleep(ms: number | undefined) {
   return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function timeDiffCalc(dateFuture: any, dateNow: any) {
+  let diffInMilliSeconds = Math.abs(dateFuture - dateNow) / 1000;
+
+  // calculate days
+  const days = Math.floor(diffInMilliSeconds / 86400);
+  diffInMilliSeconds -= days * 86400;
+  console.log("calculated days", days);
+
+  // calculate hours
+  const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
+  diffInMilliSeconds -= hours * 3600;
+  console.log("calculated hours", hours);
+
+  // calculate minutes
+  const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
+  diffInMilliSeconds -= minutes * 60;
+  console.log("minutes", minutes);
+
+  let difference = "";
+  if (days > 0) {
+    difference += days === 1 ? `${days} day, ` : `${days} days, `;
+  }
+
+  difference +=
+    hours === 0 || hours === 1 ? `${hours} hour, ` : `${hours} hours, `;
+
+  difference +=
+    minutes === 0 || hours === 1 ? `${minutes} minutes` : `${minutes} minutes`;
+
+  return difference;
 }
 
 main();
