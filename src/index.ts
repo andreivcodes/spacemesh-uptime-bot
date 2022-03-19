@@ -70,9 +70,7 @@ const getMsg = async () => {
         },
         description: `**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(
           genesisTime * 1000
-        ).toLocaleString(
-          "en-US"
-        )} GMT\` \u3000 \n**Uptime time**\n\`${timeDiffCalc(
+        ).toLocaleString("en-US")} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(
           new Date(genesisTime * 1000),
           new Date()
         )}\` \u3000`,
