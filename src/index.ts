@@ -33,10 +33,12 @@ async function main() {
     const channel = client.channels.cache.get("924626320237936681");
     let networkStatusEmbed = await getMsg();
 
-    let oldmsg = await channel.messages.fetch("953365375528075274");
-
-    if (oldmsg) networkStatusMsg = oldmsg;
-    else networkStatusMsg = await channel.send(networkStatusEmbed);
+    try {
+      let oldmsg = await channel.messages.fetch("957321335799939152");
+      networkStatusMsg = oldmsg;
+    } catch {
+      networkStatusMsg = await channel.send(networkStatusEmbed);
+    }
 
     while (1) {
       try {
@@ -46,6 +48,7 @@ async function main() {
         console.log(`Err: ${e}`);
       }
       networkStatusMsg.edit(networkStatusEmbed);
+      console.log("edited");
       await sleep(30 * 1000);
     }
   });
