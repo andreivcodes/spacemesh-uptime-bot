@@ -16,6 +16,8 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true,
 });
 
+let netStatus: any;
+
 let networkStatusMsg;
 
 let netId: any, currentEpoch: any, currentLayer: any, genesisTime: any;
@@ -58,7 +60,6 @@ async function main() {
 }
 
 const getMsg = async () => {
-  let netStatus;
   if (typeof currentLayer != "undefined")
     return {
       embeds: [
@@ -129,38 +130,40 @@ async function getData() {
         return console.log(error);
       }
 
-      if (!error && res.statusCode == 200) {
-        networkUrl = res.body[0]["grpcAPI"].slice(0, -1).substring(8);
-      }
+      try {
+        if (!error && res.statusCode == 200) {
+          networkUrl = res.body[0]["grpcAPI"].slice(0, -1).substring(8);
+        }
 
-      console.log(networkUrl);
+        console.log(networkUrl);
 
-      const meshProto =
-        grpc.loadPackageDefinition(packageDefinition).spacemesh.v1;
-      const client = new meshProto.MeshService(
-        `${networkUrl}:443`,
-        grpc.credentials.createSsl()
-      );
+        const meshProto =
+          grpc.loadPackageDefinition(packageDefinition).spacemesh.v1;
+        const client = new meshProto.MeshService(
+          `${networkUrl}:443`,
+          grpc.credentials.createSsl()
+        );
 
-      client.NetID({}, (error: any, reponse: any) => {
-        console.log(reponse["netid"]["value"]);
-        netId = reponse["netid"]["value"];
-      });
+        client.NetID({}, (error: any, reponse: any) => {
+          console.log(reponse["netid"]["value"]);
+          netId = reponse["netid"]["value"];
+        });
 
-      client.CurrentEpoch({}, (error: any, reponse: any) => {
-        console.log(reponse["epochnum"]["value"]);
-        currentEpoch = reponse["epochnum"]["value"];
-      });
+        client.CurrentEpoch({}, (error: any, reponse: any) => {
+          console.log(reponse["epochnum"]["value"]);
+          currentEpoch = reponse["epochnum"]["value"];
+        });
 
-      client.CurrentLayer({}, (error: any, reponse: any) => {
-        console.log(reponse["layernum"]["number"]);
-        currentLayer = reponse["layernum"]["number"];
-      });
+        client.CurrentLayer({}, (error: any, reponse: any) => {
+          console.log(reponse["layernum"]["number"]);
+          currentLayer = reponse["layernum"]["number"];
+        });
 
-      client.GenesisTime({}, (error: any, reponse: any) => {
-        console.log(reponse["unixtime"]["value"]);
-        genesisTime = reponse["unixtime"]["value"];
-      });
+        client.GenesisTime({}, (error: any, reponse: any) => {
+          console.log(reponse["unixtime"]["value"]);
+          genesisTime = reponse["unixtime"]["value"];
+        });
+      } catch (e) {}
     }
   );
 }
