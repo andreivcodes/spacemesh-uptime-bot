@@ -36,7 +36,7 @@ async function main() {
     let networkStatusEmbed = await getMsg();
 
     try {
-      let oldmsg = await channel.messages.fetch("957322377501499432");
+      let oldmsg = await channel.messages.fetch("984340065083863071");
       networkStatusMsg = oldmsg;
     } catch {
       networkStatusMsg = await channel.send(networkStatusEmbed);
@@ -93,13 +93,13 @@ const getMsg = async () => {
       embeds: [
         {
           type: "rich",
-          title: `Network Status - ${netStatus}`,
+          title: `Network Status - Offline`,
           thumbnail: {
             url: `https://platform.spacemesh.io/favicon.png`,
             height: 50,
             width: 50,
           },
-          description: `**Network is offline**`,
+          description: `**The network is curfrently offline**`,
           color: 0x0095ff,
           timestamp: new Date(),
           footer: {
