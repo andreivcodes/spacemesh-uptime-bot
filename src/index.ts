@@ -99,7 +99,7 @@ const getMsg = async () => {
             height: 50,
             width: 50,
           },
-          description: `**The network is curfrently offline**`,
+          description: `**The network is currently offline**`,
           color: 0x0095ff,
           timestamp: new Date(),
           footer: {
