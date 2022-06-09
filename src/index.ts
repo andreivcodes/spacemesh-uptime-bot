@@ -59,35 +59,55 @@ async function main() {
 
 const getMsg = async () => {
   let netStatus;
-  if (typeof currentLayer != "undefined") netStatus = "online";
-  else netStatus = "offline";
-  const networkStatusEmbed = {
-    embeds: [
-      {
-        type: "rich",
-        title: `Network Status - ${netStatus}`,
-        thumbnail: {
-          url: `https://platform.spacemesh.io/favicon.png`,
-          height: 50,
-          width: 50,
+  if (typeof currentLayer != "undefined")
+    return {
+      embeds: [
+        {
+          type: "rich",
+          title: `Network Status - ${netStatus}`,
+          thumbnail: {
+            url: `https://platform.spacemesh.io/favicon.png`,
+            height: 50,
+            width: 50,
+          },
+          description: `**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(
+            genesisTime * 1000
+          ).toLocaleString(
+            "en-US"
+          )} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(
+            new Date(genesisTime * 1000),
+            new Date()
+          )}\` \u3000`,
+          color: 0x0095ff,
+          timestamp: new Date(),
+          footer: {
+            text: `Keep smeshing ❤️`,
+            icon_url: `https://platform.spacemesh.io/favicon.png`,
+          },
         },
-        description: `**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(
-          genesisTime * 1000
-        ).toLocaleString("en-US")} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(
-          new Date(genesisTime * 1000),
-          new Date()
-        )}\` \u3000`,
-        color: 0x0095ff,
-        timestamp: new Date(),
-        footer: {
-          text: `Keep smeshing ❤️`,
-          icon_url: `https://platform.spacemesh.io/favicon.png`,
+      ],
+    };
+  else
+    return {
+      embeds: [
+        {
+          type: "rich",
+          title: `Network Status - ${netStatus}`,
+          thumbnail: {
+            url: `https://platform.spacemesh.io/favicon.png`,
+            height: 50,
+            width: 50,
+          },
+          description: `**Network is offline**`,
+          color: 0x0095ff,
+          timestamp: new Date(),
+          footer: {
+            text: `Keep smeshing ❤️`,
+            icon_url: `https://platform.spacemesh.io/favicon.png`,
+          },
         },
-      },
-    ],
-  };
-
-  return networkStatusEmbed;
+      ],
+    };
 };
 
 async function getData() {
