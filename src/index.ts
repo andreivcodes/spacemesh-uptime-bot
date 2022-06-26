@@ -16,11 +16,13 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true,
 });
 
-let netStatus: any;
-
 let networkStatusMsg;
 
-let netId: any, currentEpoch: any, currentLayer: any, genesisTime: any;
+let netName: any,
+  netId: any,
+  currentEpoch: any,
+  currentLayer: any,
+  genesisTime: any;
 
 async function main() {
   getData();
@@ -65,7 +67,7 @@ const getMsg = async () => {
       embeds: [
         {
           type: "rich",
-          title: `Network Status - ${netStatus}`,
+          title: `Network Status - ${netName}`,
           thumbnail: {
             url: `https://platform.spacemesh.io/favicon.png`,
             height: 50,
@@ -133,6 +135,7 @@ async function getData() {
       try {
         if (!error && res.statusCode == 200) {
           networkUrl = res.body[0]["grpcAPI"].slice(0, -1).substring(8);
+          netName = res.body[0]["netName"];
         }
 
         console.log(networkUrl);
