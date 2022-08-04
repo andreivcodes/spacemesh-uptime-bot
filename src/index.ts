@@ -148,22 +148,22 @@ async function getData() {
         );
 
         client.NetID({}, (error: any, reponse: any) => {
-          console.log(reponse["netid"]["value"]);
+          console.log(reponse);
           netId = reponse["netid"]["value"];
         });
 
         client.CurrentEpoch({}, (error: any, reponse: any) => {
-          console.log(reponse["epochnum"]["value"]);
+          console.log(reponse);
           currentEpoch = reponse["epochnum"]["value"];
         });
 
         client.CurrentLayer({}, (error: any, reponse: any) => {
-          console.log(reponse["layernum"]["number"]);
+          console.log(reponse);
           currentLayer = reponse["layernum"]["number"];
         });
 
         client.GenesisTime({}, (error: any, reponse: any) => {
-          console.log(reponse["unixtime"]["value"]);
+          console.log(reponse);
           genesisTime = reponse["unixtime"]["value"];
         });
       } catch (e) {}
