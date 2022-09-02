@@ -5,6 +5,7 @@ RUN apk update
 COPY . ./app
 
 WORKDIR /app
+RUN rm -rf /node_modules
 
 RUN yarn
 
