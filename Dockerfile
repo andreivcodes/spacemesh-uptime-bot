@@ -11,4 +11,4 @@ WORKDIR /app
 
 RUN yarn
 
-CMD [ "node", "yarn start" ]
+CMD [ "yarn", "start" ]
