@@ -17,6 +17,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 
 let networkStatusMsg;
+let networkOnline: boolean = false;
 
 let netName: any,
   netId: any,
@@ -62,7 +63,7 @@ async function main() {
 }
 
 const getMsg = async () => {
-  if (typeof currentLayer != "undefined")
+  if (typeof currentLayer != "undefined" && networkOnline)
     return {
       embeds: [
         {
@@ -129,6 +130,7 @@ async function getData() {
       body: any
     ) => {
       if (error) {
+        networkOnline = false;
         return console.log(error);
       }
 
@@ -136,6 +138,7 @@ async function getData() {
         if (!error && res.statusCode == 200) {
           networkUrl = res.body[0]["grpcAPI"].slice(0, -1).substring(8);
           netName = res.body[0]["netName"];
+          networkOnline = true;
         }
 
         console.log(networkUrl);
@@ -148,25 +151,36 @@ async function getData() {
         );
 
         client.NetID({}, (error: any, reponse: any) => {
-          console.log(reponse);
-          netId = reponse["netid"]["value"];
+          if (error.code != 13) {
+            console.log(reponse);
+            netId = reponse["netid"]["value"];
+          } else networkOnline = false;
         });
 
         client.CurrentEpoch({}, (error: any, reponse: any) => {
-          console.log(reponse);
-          currentEpoch = reponse["epochnum"]["value"];
+          if (error.code != 13) {
+            console.log(reponse);
+            currentEpoch = reponse["epochnum"]["value"];
+          } else networkOnline = false;
         });
 
         client.CurrentLayer({}, (error: any, reponse: any) => {
-          console.log(reponse);
-          currentLayer = reponse["layernum"]["number"];
+          if (error.code != 13) {
+            console.log(reponse);
+            currentLayer = reponse["layernum"]["number"];
+          } else networkOnline = false;
         });
 
         client.GenesisTime({}, (error: any, reponse: any) => {
-          console.log(reponse);
-          genesisTime = reponse["unixtime"]["value"];
+          if (error.code != 13) {
+            console.log(reponse);
+            genesisTime = reponse["unixtime"]["value"];
+          } else networkOnline = false;
         });
-      } catch (e) {}
+      } catch (e) {
+        console.log(e);
+        networkOnline = false;
+      }
     }
   );
 }
