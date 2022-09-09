@@ -139,6 +139,7 @@ async function getData() {
         if (!error) {
           console.log(reponse);
           netId = reponse["netid"]["value"];
+          networkOnline = true;
         } else networkOnline = false;
       });
 
