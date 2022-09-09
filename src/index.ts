@@ -38,7 +38,7 @@ async function main() {
     let networkStatusEmbed = await getMsg();
 
     try {
-      let oldmsg = await channel.messages.fetch("1004674368896516179");
+      let oldmsg = await channel.messages.fetch("1017770842467336246");
       networkStatusMsg = oldmsg;
     } catch {
       networkStatusMsg = await channel.send(networkStatusEmbed);
