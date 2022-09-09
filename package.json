@@ -30,6 +30,6 @@
     "@grpc/proto-loader": "^0.6.9",
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
-    "request": "^2.88.2"
+    "node-fetch": "2"
   }
 }

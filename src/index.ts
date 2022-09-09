@@ -1,8 +1,7 @@
-const { Client, Intents, MessageEmbed } = require("discord.js");
-const request = require("request");
+const { Client, Intents } = require("discord.js");
 const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader");
-const { ProtoGrpcType } = require("./proto/mesh");
+import fetch from "node-fetch";
 
 require("dotenv").config();
 
@@ -118,71 +117,52 @@ async function getData() {
   console.log("getData");
 
   let url = "https://discover.spacemesh.io/networks.json";
-  let options = { json: true };
+
   let networkUrl: String;
 
-  request(
-    url,
-    options,
-    (
-      error: any,
-      res: { statusCode: number; body: { [x: string]: string }[] },
-      body: any
-    ) => {
-      if (error) {
-        networkOnline = false;
-        return console.log(error);
-      }
+  await fetch(url)
+    .then((response) => response.json())
+    .then((res: any) => {
+      networkUrl = res[0]["grpcAPI"].slice(0, -1).substring(8);
+    })
+    .then(() => {
+      console.log(networkUrl);
 
-      try {
-        if (!error && res.statusCode == 200) {
-          networkUrl = res.body[0]["grpcAPI"].slice(0, -1).substring(8);
-          netName = res.body[0]["netName"];
-          networkOnline = true;
-        }
+      const meshProto =
+        grpc.loadPackageDefinition(packageDefinition).spacemesh.v1;
+      const client = new meshProto.MeshService(
+        `${networkUrl}:443`,
+        grpc.credentials.createSsl()
+      );
 
-        console.log(networkUrl);
+      client.NetID({}, (error: any, reponse: any) => {
+        if (!error) {
+          console.log(reponse);
+          netId = reponse["netid"]["value"];
+        } else networkOnline = false;
+      });
 
-        const meshProto =
-          grpc.loadPackageDefinition(packageDefinition).spacemesh.v1;
-        const client = new meshProto.MeshService(
-          `${networkUrl}:443`,
-          grpc.credentials.createSsl()
-        );
+      client.CurrentEpoch({}, (error: any, reponse: any) => {
+        if (!error) {
+          console.log(reponse);
+          currentEpoch = reponse["epochnum"]["value"];
+        } else networkOnline = false;
+      });
 
-        client.NetID({}, (error: any, reponse: any) => {
-          if (!error) {
-            console.log(reponse);
-            netId = reponse["netid"]["value"];
-          } else networkOnline = false;
-        });
+      client.CurrentLayer({}, (error: any, reponse: any) => {
+        if (!error) {
+          console.log(reponse);
+          currentLayer = reponse["layernum"]["number"];
+        } else networkOnline = false;
+      });
 
-        client.CurrentEpoch({}, (error: any, reponse: any) => {
-          if (!error) {
-            console.log(reponse);
-            currentEpoch = reponse["epochnum"]["value"];
-          } else networkOnline = false;
-        });
-
-        client.CurrentLayer({}, (error: any, reponse: any) => {
-          if (!error) {
-            console.log(reponse);
-            currentLayer = reponse["layernum"]["number"];
-          } else networkOnline = false;
-        });
-
-        client.GenesisTime({}, (error: any, reponse: any) => {
-          if (!error) {
-            console.log(reponse);
-            genesisTime = reponse["unixtime"]["value"];
-          } else networkOnline = false;
-        });
-      } catch (e) {
-        console.log(e);
-        networkOnline = false;
-      }
-    }
-  );
+      client.GenesisTime({}, (error: any, reponse: any) => {
+        if (!error) {
+          console.log(reponse);
+          genesisTime = reponse["unixtime"]["value"];
+        } else networkOnline = false;
+      });
+    });
 }
 
 function sleep(ms: number | undefined) {
