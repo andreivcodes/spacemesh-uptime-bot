@@ -151,28 +151,28 @@ async function getData() {
         );
 
         client.NetID({}, (error: any, reponse: any) => {
-          if (error.code != 13) {
+          if (!error) {
             console.log(reponse);
             netId = reponse["netid"]["value"];
           } else networkOnline = false;
         });
 
         client.CurrentEpoch({}, (error: any, reponse: any) => {
-          if (error.code != 13) {
+          if (!error) {
             console.log(reponse);
             currentEpoch = reponse["epochnum"]["value"];
           } else networkOnline = false;
         });
 
         client.CurrentLayer({}, (error: any, reponse: any) => {
-          if (error.code != 13) {
+          if (!error) {
             console.log(reponse);
             currentLayer = reponse["layernum"]["number"];
           } else networkOnline = false;
         });
 
         client.GenesisTime({}, (error: any, reponse: any) => {
-          if (error.code != 13) {
+          if (!error) {
             console.log(reponse);
             genesisTime = reponse["unixtime"]["value"];
           } else networkOnline = false;
