@@ -6,7 +6,13 @@ import {
 } from "discord.js";
 import fetch from "node-fetch";
 import { config } from "dotenv";
-import { createMeshChannel } from "@andreivcodes/spacemeshlib";
+import {
+  createMeshClient,
+  CurrentEpochResponse,
+  CurrentLayerResponse,
+  GenesisTimeResponse,
+  NetIDResponse,
+} from "@andreivcodes/spacemeshlib";
 config();
 
 let networkOnline: boolean = false;
@@ -104,11 +110,11 @@ async function getData() {
       netName = res[0]["netName"];
     })
     .then(async () => {
-      const channel = createMeshChannel(networkUrl, 443, true);
+      const channel = createMeshClient(networkUrl, 443, true);
 
       await channel
         .netID({})
-        .then((r) => {
+        .then((r: NetIDResponse) => {
           netId = r.netid?.value;
           networkOnline = true;
         })
@@ -116,7 +122,7 @@ async function getData() {
 
       await channel
         .currentEpoch({})
-        .then((r) => {
+        .then((r: CurrentEpochResponse) => {
           currentEpoch = r.epochnum?.value;
           networkOnline = true;
         })
@@ -124,7 +130,7 @@ async function getData() {
 
       await channel
         .currentLayer({})
-        .then((r) => {
+        .then((r: CurrentLayerResponse) => {
           currentLayer = r.layernum?.number;
           networkOnline = true;
         })
@@ -132,7 +138,7 @@ async function getData() {
 
       await channel
         .genesisTime({})
-        .then((r) => {
+        .then((r: GenesisTimeResponse) => {
           genesisTime = r.unixtime?.value;
           networkOnline = true;
         })

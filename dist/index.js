@@ -1,7 +1,7 @@
 import { Client, EmbedBuilder, GatewayIntentBits, } from "discord.js";
 import fetch from "node-fetch";
 import { config } from "dotenv";
-import { createMeshChannel } from "@andreivcodes/spacemeshlib";
+import { createMeshClient, } from "@andreivcodes/spacemeshlib";
 config();
 let networkOnline = false;
 let netName, netId, currentEpoch, currentLayer, genesisTime;
@@ -72,7 +72,7 @@ async function getData() {
         netName = res[0]["netName"];
     })
         .then(async () => {
-        const channel = createMeshChannel(networkUrl, 443, true);
+        const channel = createMeshClient(networkUrl, 443, true);
         await channel
             .netID({})
             .then((r) => {
