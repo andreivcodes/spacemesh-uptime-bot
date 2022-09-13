@@ -39,7 +39,8 @@ async function main() {
     client.login(process.env.TOKEN);
 }
 const createEmbed = () => {
-    if (networkOnline && currentLayer != undefined)
+    if (networkOnline && currentLayer != undefined) {
+        console.log(`**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(genesisTime * 1000).toLocaleString("en-US")} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(new Date(genesisTime * 1000), new Date())}\` \u3000`);
         return new EmbedBuilder()
             .setColor(0x0095ff)
             .setTitle(`Network Status - ${netName}`)
@@ -50,7 +51,9 @@ const createEmbed = () => {
             text: `Keep smeshing ❤️`,
             iconURL: `https://platform.spacemesh.io/favicon.png`,
         });
-    else
+    }
+    else {
+        console.log(`**The network is currently offline**`);
         return new EmbedBuilder()
             .setColor(0x0095ff)
             .setTitle(`Network Status - ${netName}`)
@@ -61,6 +64,7 @@ const createEmbed = () => {
             text: `Keep smeshing ❤️`,
             iconURL: `https://platform.spacemesh.io/favicon.png`,
         });
+    }
 };
 async function getData() {
     let url = "https://discover.spacemesh.io/networks.json";
@@ -108,15 +112,12 @@ function timeDiffCalc(dateFuture, dateNow) {
     // calculate days
     const days = Math.floor(diffInMilliSeconds / 86400);
     diffInMilliSeconds -= days * 86400;
-    console.log("calculated days", days);
     // calculate hours
     const hours = Math.floor(diffInMilliSeconds / 3600) % 24;
     diffInMilliSeconds -= hours * 3600;
-    console.log("calculated hours", hours);
     // calculate minutes
     const minutes = Math.floor(diffInMilliSeconds / 60) % 60;
     diffInMilliSeconds -= minutes * 60;
-    console.log("minutes", minutes);
     let difference = "";
     if (days > 0) {
         difference += days === 1 ? `${days} day, ` : `${days} days, `;
