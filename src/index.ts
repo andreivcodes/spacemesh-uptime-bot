@@ -47,12 +47,15 @@ async function main() {
       channel.messages
         .fetch(prevMsgId)
         .then((message) => {
-          message.edit({ embeds: [createEmbed()] });
+          message
+            .edit({ embeds: [createEmbed()] })
+            .then(() => console.log("Edited!"));
         })
         .catch(() =>
           channel
             .send({ embeds: [createEmbed()] })
             .then((newMsg) => (prevMsgId = newMsg.id))
+            .then(() => console.log("Created!"))
         );
     };
     sendMessage();
@@ -88,7 +91,7 @@ const createEmbed = () => {
         )}\` \u3000`
       )
       .setThumbnail(`https://platform.spacemesh.io/favicon.png`)
-      .setTimestamp()
+      .setTimestamp(new Date())
       .setFooter({
         text: `Keep smeshing ❤️`,
         iconURL: `https://platform.spacemesh.io/favicon.png`,
@@ -100,7 +103,7 @@ const createEmbed = () => {
       .setTitle(`Network Status - ${netName}`)
       .setDescription(`**The network is currently offline**`)
       .setThumbnail(`https://platform.spacemesh.io/favicon.png`)
-      .setTimestamp()
+      .setTimestamp(new Date())
       .setFooter({
         text: `Keep smeshing ❤️`,
         iconURL: `https://platform.spacemesh.io/favicon.png`,
