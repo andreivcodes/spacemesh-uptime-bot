@@ -5,8 +5,8 @@ import { createMeshClient, } from "@andreivcodes/spacemeshlib";
 config();
 let networkOnline = false;
 let netName, netId, currentEpoch, currentLayer, genesisTime;
-const CHANNEL_ID = "924626320237936681";
-const OLD_MSG_ID = "1019234184230875176";
+const CHANNEL_ID = process.env.CHANNEL_ID;
+const OLD_MSG_ID = process.env.MESSAGE_ID;
 let prevMsgId;
 const client = new Client({
     intents: [
