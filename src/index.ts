@@ -122,6 +122,7 @@ async function getData() {
       netName = res[0]["netName"];
     })
     .then(async () => {
+      netName = "devnet310";
       networkUrl = "api-devnet310.spacemesh.io";
       console.log(networkUrl);
       const channel = createMeshClient(networkUrl, 443, true);
