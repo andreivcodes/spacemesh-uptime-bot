@@ -11,7 +11,6 @@ import {
   CurrentEpochResponse,
   CurrentLayerResponse,
   GenesisTimeResponse,
-  NetIDResponse,
 } from "@andreivcodes/spacemeshlib";
 config();
 
@@ -72,7 +71,7 @@ async function main() {
 const createEmbed = () => {
   if (networkOnline && currentLayer != undefined) {
     console.log(
-      `**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(
+      `**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(
         genesisTime * 1000
       ).toLocaleString("en-US")} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(
         new Date(genesisTime * 1000),
@@ -83,7 +82,7 @@ const createEmbed = () => {
       .setColor(0x0095ff)
       .setTitle(`Network Status - ${netName}`)
       .setDescription(
-        `**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(
+        `**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(
           genesisTime * 1000
         ).toLocaleString("en-US")} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(
           new Date(genesisTime * 1000),
@@ -123,16 +122,11 @@ async function getData() {
       netName = res[0]["netName"];
     })
     .then(async () => {
+      networkUrl = "api-devnet310.spacemesh.io";
+      console.log(networkUrl);
       const channel = createMeshClient(networkUrl, 443, true);
 
-      await channel
-        .netID({})
-        .then((r: NetIDResponse) => {
-          netId = r.netid?.value;
-          networkOnline = true;
-        })
-        .catch(() => (networkOnline = false));
-
+      console.log(channel);
       await channel
         .currentEpoch({})
         .then((r: CurrentEpochResponse) => {

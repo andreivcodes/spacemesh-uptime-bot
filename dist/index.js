@@ -34,7 +34,7 @@ async function main() {
                 .then(() => console.log("Created!")));
         };
         sendMessage();
-        setInterval(sendMessage, 10 * 60 * 1000);
+        setInterval(sendMessage, 10 * 1000);
     });
     client.on("error", (error) => {
         console.log(error);
@@ -43,11 +43,11 @@ async function main() {
 }
 const createEmbed = () => {
     if (networkOnline && currentLayer != undefined) {
-        console.log(`**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(genesisTime * 1000).toLocaleString("en-US")} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(new Date(genesisTime * 1000), new Date())}\` \u3000`);
+        console.log(`**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(genesisTime * 1000).toLocaleString("en-US")} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(new Date(genesisTime * 1000), new Date())}\` \u3000`);
         return new EmbedBuilder()
             .setColor(0x0095ff)
             .setTitle(`Network Status - ${netName}`)
-            .setDescription(`**Network ID**\n\`${netId}\` \u3000 \n**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(genesisTime * 1000).toLocaleString("en-US")} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(new Date(genesisTime * 1000), new Date())}\` \u3000`)
+            .setDescription(`**Current Epoch**\n\`${currentEpoch}\` \u3000 \n**Current Layer**\n\`${currentLayer}\` \u3000 \n**Genesis time**\n\`${new Date(genesisTime * 1000).toLocaleString("en-US")} GMT\` \u3000 \n**Uptime**\n\`${timeDiffCalc(new Date(genesisTime * 1000), new Date())}\` \u3000`)
             .setThumbnail(`https://platform.spacemesh.io/favicon.png`)
             .setTimestamp(new Date())
             .setFooter({
@@ -79,14 +79,10 @@ async function getData() {
         netName = res[0]["netName"];
     })
         .then(async () => {
+        networkUrl = "api-devnet310.spacemesh.io";
+        console.log(networkUrl);
         const channel = createMeshClient(networkUrl, 443, true);
-        await channel
-            .netID({})
-            .then((r) => {
-            netId = r.netid?.value;
-            networkOnline = true;
-        })
-            .catch(() => (networkOnline = false));
+        console.log(channel);
         await channel
             .currentEpoch({})
             .then((r) => {
