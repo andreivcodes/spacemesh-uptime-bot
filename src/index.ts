@@ -61,7 +61,7 @@ async function main() {
         });
     };
     sendMessage();
-    setInterval(sendMessage, 10 * 1000);
+    setInterval(sendMessage, 10 * 60 * 1000);
   });
 
   client.on("error", (error: any) => {
