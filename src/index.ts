@@ -48,17 +48,20 @@ async function main() {
         .then((message) => {
           message
             .edit({ embeds: [createEmbed()] })
-            .then(() => console.log("Edited!"));
+            .then(() => console.log("Edited!"))
+            .catch((e) => console.log(e));
         })
-        .catch(() =>
+        .catch((e) => {
+          console.log(e);
           channel
             .send({ embeds: [createEmbed()] })
             .then((newMsg) => (prevMsgId = newMsg.id))
             .then(() => console.log("Created!"))
-        );
+            .catch((e) => console.log(e));
+        });
     };
     sendMessage();
-    setInterval(sendMessage, 10 * 60 * 1000);
+    setInterval(sendMessage, 10 * 1000);
   });
 
   client.on("error", (error: any) => {
@@ -122,11 +125,8 @@ async function getData() {
       netName = res[0]["netName"];
     })
     .then(async () => {
-      networkUrl = "api-devnet310.spacemesh.io";
-      console.log(networkUrl);
       const channel = createMeshClient(networkUrl, 443, true);
 
-      console.log(channel);
       await channel
         .currentEpoch({})
         .then((r: CurrentEpochResponse) => {
